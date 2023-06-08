@@ -1,0 +1,15 @@
+/* estilos.css */
+
+body {
+  text-align: left ; /* Alinea el contenido del cuerpo del documento al centro */
+}
+
+h1 {
+  text-align: left; /* Alinea los encabezados h1 a la izquierda */
+  margin-bottom: 20px; /* Agrega un margen inferior de 20 píxeles */
+}
+
+p {
+  text-align: justify; /* Alinea los párrafos justificados */
+  margin-bottom: 10px; /* Agrega un margen inferior de 10 píxeles */
+}

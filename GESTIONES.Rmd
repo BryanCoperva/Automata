@@ -1,0 +1,164 @@
+---
+title: "GESTIONES"
+author: "Bryan Polito"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    css: style.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r libreria, include=FALSE}
+# Cargar la librería "stringr" para trabajar con manipulación de cadenas
+library(stringr)
+library(readxl)
+library(tidyverse)
+library(kableExtra)
+
+```
+
+### Tus datos son los siguientes :
+```{r variables ,include=TRUE}
+fecha <- c("05/06/2023")
+hora_salida <- c("14:00:00")
+fake_real <- c("REAL")
+```
+
+```{r bases, echo=FALSE}
+ # Leer el archivo base_datos
+base_datos <- read_excel("C:/Users/COPERVA/Desktop/GESTIONES/base.xlsx")
+
+
+# Obtener el número de columnas en base_datos
+num_columnas <- ncol(base_datos)
+
+# 
+
+layout <- read_excel("C:/Users/COPERVA/Desktop/GESTIONES/layout.xlsx")
+consulta <- read_excel("C:/Users/COPERVA/Desktop/GESTIONES/consulta.xlsx")
+layout <- select(layout, CUENTA, ID_CUENTA, COMENTARIO, TIPODEHERRAMIENTA, TELEFONO_EMAIL, FECHA, FAKE_REAL, HORASALIDA, IDNUMERO)
+```
+
+### Número de filas
+```{r filas, echo=FALSE}
+num_filas <- nrow(base_datos)
+num_filas
+```
+
+```{r condicional, echo=FALSE}
+# Verificar el número de columnas y tomar decisiones en función de él
+if (num_columnas >= 3) {
+  # Tomar las primeras 3 columnas de la base
+  base_datos <- select(base_datos, 1:3)
+  
+  colnames(base_datos) <- c("Telefono", "mensaje", "Cuenta")
+  num_filas <- nrow(layout)
+  layout <- layout[rep(seq_len(num_filas), length.out = nrow(base_datos)), ]
+  
+  
+   # Asignar los valores de base_datos a las columnas correspondientes en layout
+  layout$CUENTA <- as.character(base_datos$Cuenta)
+  layout$TELEFONO_EMAIL <- as.character(base_datos$Telefono)
+  
+  
+  layout$ID_CUENTA <- as.character(consulta$id_cuenta[match(layout$CUENTA, consulta$CUENTAS)])
+  layout$IDNUMERO <- as.character(consulta$id_telefonocuenta[match(layout$TELEFONO_EMAIL , consulta$tel)])
+
+  # Asignar los valores de base_datos a las columnas correspondientes en layout
+  layout$COMENTARIO <- base_datos$mensaje
+  layout$FECHA <- as.character(fecha)
+  layout$FAKE_REAL <- as.character(fake_real, stringsAsFactors = FALSE)
+  layout$HORASALIDA <- as.character(hora_salida)
+  
+   # Realizar las transformaciones en los campos de texto
+ layout[] <- lapply(layout, function(x) {
+    x <- str_replace_all(x, "[áäâà]", "a")
+    x <- str_replace_all(x, "[éëêè]", "e")
+    x <- str_replace_all(x, "[íïîì]", "i")
+    x <- str_replace_all(x, "[óöôò]", "o")
+    x <- str_replace_all(x, "[úüûù]", "u")
+    x <- str_replace_all(x, "[ñ]", "n")
+    return(x)})
+  
+  herramienta <- c("SMS")
+  layout$TIPODEHERRAMIENTA <- as.character(herramienta)
+  
+  # Filtrar NA
+  layout <- layout %>%
+  filter(!is.na(ID_CUENTA)) %>%
+  mutate(IDNUMERO = ifelse(is.na(IDNUMERO), "", IDNUMERO))
+
+  print("Tu base es un SMS")
+
+} else if (num_columnas >= 2)   {
+  
+   # Tomar las primeras dos columnas de la base
+  base_datos <- select(base_datos, 1:2)
+  # Si la base tiene 2 columnas corresponde a un layout
+  colnames(base_datos) <- c("Telefono", "Cuenta")
+ # Replicar los valores de base_datos para asignarlos a todas las filas de layout
+  num_filas <- nrow(layout)
+  layout <- layout[rep(seq_len(num_filas), length.out = nrow(base_datos)), ]
+
+  # Asignar los valores de base_datos a las columnas correspondientes en layout
+  layout$CUENTA <- as.character(base_datos$Cuenta)
+  layout$TELEFONO_EMAIL <- as.character(base_datos$Telefono)
+  
+  # Cruzar consulta con layout
+  layout$ID_CUENTA <- consulta$id_cuenta[match(layout$CUENTA, consulta$CUENTAS)]
+  layout$IDNUMERO <- consulta$id_telefonocuenta[match(layout$TELEFONO_EMAIL , consulta$tel)]
+  
+  # cAARGA DE FECHA, FAKE_REAL, HORA_SALIDA
+  layout$FECHA <- as.character(fecha)
+  layout$FAKE_REAL <- as.character(fake_real, stringsAsFactors = FALSE)
+  layout$HORASALIDA <- as.character(hora_salida)
+  
+  # Tipo de herramienta
+  herramienta <- c("BLAST")
+  layout$TIPODEHERRAMIENTA <- as.character(herramienta)
+  comentario <- c("ENVIO DE BLASTER")
+  layout$COMENTARIO <- as.character(comentario)
+  
+  # Filtrar NA
+  layout <- layout %>%
+  filter(!is.na(ID_CUENTA)) %>%
+  mutate(IDNUMERO = ifelse(is.na(IDNUMERO), "", IDNUMERO))
+  
+   print("Tu base es un BLASTER")
+  
+} else {
+  # El número de columnas no coincide con lo esperado
+  print("La base de datos contiene columnas adicionales que se deben borrar")
+  
+}
+```
+
+
+```{r texto, echo=FALSE}
+# Reemplazar "REL" por "REAL" en la columna "FAKE_REAL"
+layout$FAKE_REAL <- ifelse(layout$FAKE_REAL == "REL", "REAL", layout$FAKE_REAL)
+layout$FAKE_REAL <- ifelse(layout$FAKE_REAL == "FKE", "FAKE", layout$FAKE_REAL)
+
+  # Guardar la base de datos filtrada como un archivo .txt
+  write.table(layout, "C:/Users/COPERVA/Desktop/GESTIONES/PLANCHADO_HERRAMIENTAS_.txt", sep = "\t", quote = FALSE, row.names = FALSE)
+  
+  print("La base de datos se ha filtrado y guardado exitosamente como un archivo .txt")
+```
+ 
+### Primeros registros de tu planchado :
+```{r planchado, echo=FALSE}
+kableExtra::kable(head(layout), format = "html") %>%
+  kableExtra::kable_styling(full_width = FALSE, position = "center")
+```
+
+### Esta es la suma de los valores NA en tus bases ( NA != 0)
+```{r suma.na, echo=FALSE}
+sum(is.na(layout))
+```
+
+
+
+ 
