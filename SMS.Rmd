@@ -7,6 +7,11 @@ output:
     css: style.css
 ---
 
+```{r setup, include=FALSE, echo=FALSE}
+require("knitr")
+opts_knit$set(root.dir = "C:/Users/COPERVA/Desktop/SMS")
+```
+
 ```{r librerias, include=FALSE}
 #carga de librerías
 library(openxlsx)
@@ -98,5 +103,5 @@ combined <-  na.omit(combined)
 
 ```{r salida, echo=FALSE}
 # Guardar el xlsx
-  datos_final <- write.xlsx(combined, "DIMEX2_SMS_08062023.xlsx")
+  datos_final <- write.xlsx(combined, "SKY_SMS_08062023.xlsx")
 ```

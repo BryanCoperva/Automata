@@ -7,9 +7,9 @@ output:
     css: style.css
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-installed.packages("tidyverse")
+```{r setup, include=FALSE, echo=FALSE}
+require("knitr")
+opts_knit$set(root.dir = "C:/Users/COPERVA/Desktop/BLASTER")
 ```
 
 ```{r librerías, include=FALSE}
@@ -70,5 +70,5 @@ kableExtra::kable(head(combinada, n=10), format = "html") %>%
 ```{r final, echo=FALSE}
 # Eliminar filas con NA
 final <-  na.omit(combinada)
-uno <- write.xlsx(final, "4_DIMEX_BLASTER30052023.xlsx")
+uno <- write.xlsx(final, "49_SKY_BLASTER08062023.xlsx")
 ```

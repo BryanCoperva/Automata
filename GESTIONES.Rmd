@@ -7,8 +7,9 @@ output:
     css: style.css
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r setup, include=FALSE, echo=FALSE}
+require("knitr")
+opts_knit$set(root.dir = "C:/Users/COPERVA/Desktop/GESTIONES")
 ```
 
 ```{r libreria, include=FALSE}
