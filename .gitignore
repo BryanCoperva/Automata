@@ -3,4 +3,6 @@
 .RData
 .Ruserdata
 # Se omitirán todos los html que se van guardando al ejecutar los markdown
-.html
+GESTIONES.html
+BLASTER.html
+SMS.html
