@@ -2,3 +2,5 @@
 .Rhistory
 .RData
 .Ruserdata
+# Se omitirán todos los html que se van guardando al ejecutar los markdown
+.html
