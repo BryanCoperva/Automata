@@ -1,15 +1,52 @@
 /* estilos.css */
 
+table {
+  border-collapse: collapse; /* Combina los bordes de las celdas adyacentes */
+}
+
+table th, table td {
+  border: 1px solid white; /* Agrega un borde de 1 píxel sólido a las celdas */
+  padding: 8px; /* Agrega un espacio interno a las celdas */
+}
+
 body {
   text-align: left ; /* Alinea el contenido del cuerpo del documento al centro */
+  background-color: black;
+  color: white; /* Cambia el color del texto para que sea legible en el fondo negro */
+  font-family: 'Arial', sans-serif; /* Cambia la fuente del texto a Arial */
+}
+
+.container {
+  width: 100vw; /* El ancho ocupa el 100% del ancho de la ventana */
+  height: 100vh; /* La altura ocupa el 100% del alto de la ventana */
 }
 
 h1 {
   text-align: left; /* Alinea los encabezados h1 a la izquierda */
   margin-bottom: 20px; /* Agrega un margen inferior de 20 píxeles */
+  font-size: 24px; /* Tamaño de fuente más grande para los encabezados h1 */
 }
+
+body, html {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
 
 p {
   text-align: justify; /* Alinea los párrafos justificados */
   margin-bottom: 10px; /* Agrega un margen inferior de 10 píxeles */
+  font-size: 16px; /* Tamaño de fuente regular para los párrafos */
+}
+
+pre {
+  background-color: #f2f2f2; /* Fondo gris claro */
+  border: 1px solid #ccc; /* Borde gris */
+  padding: 10px; /* Espacio interno */
+}
+
+.container {
+  border: 1px solid black; /* Establece un borde sólido de 1 píxel de grosor y color negro */
 }

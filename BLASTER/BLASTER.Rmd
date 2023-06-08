@@ -1,0 +1,74 @@
+---
+title: "BLASTER"
+author: "Bryan Polito"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    css: style.css
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+installed.packages("tidyverse")
+```
+
+```{r librerías, include=FALSE}
+# Librerías a ocupar
+library(readxl)
+library(openxlsx)
+library(tidyverse)
+library(kableExtra)
+```
+
+## Ruta de trabajo
+```{r RUTA, echo=FALSE}
+RUTA <- setwd("C:/Users/COPERVA/Desktop/BLASTER")
+print(RUTA)
+```
+
+## Carga de base
+```{r BASES, echo=FALSE}
+base <- read_excel("base.xlsx")
+kableExtra::kable(head(base), format = "html") %>%
+  kableExtra::kable_styling(full_width = FALSE, position = "left")
+
+```
+
+## Carga de layout
+```{r layout, echo=FALSE}
+layout <- read_excel("layout.xlsx")
+kableExtra::kable(head(layout), format = "html") %>%
+  kableExtra::kable_styling(full_width = FALSE, position = "left")
+```
+
+```{r cambio, echo=FALSE}
+# Cambio de nombres en las columnas
+colnames(base) <- c("Telefono", "Cuenta")
+colnames(layout) <- c("Telefono","Cuenta")
+base <- select(base, Telefono, Cuenta )
+```
+
+```{r combined, echo=FALSE}
+# Se junta el layout y la base
+combinada <- rbind(layout, base)
+```
+
+```{r NA, echo=FALSE}
+# Extracción de registro para completar NA
+combinada$Cuenta <- ifelse(is.na(combinada$Cuenta), base$Cuenta[!is.na(base$Cuenta)][1], combinada$Cuenta)
+```
+
+## Limpieza de los datos
+```{r limpieza, echo=FALSE}
+#Se quitan espacios y se transforma en variables de tipo texto
+combinada$Telefono <- gsub("\\s+", "", as.character(combinada$Telefono))
+combinada$Cuenta <- gsub("\\s+", "", as.character(combinada$Cuenta))
+kableExtra::kable(head(combinada, n=10), format = "html") %>%
+  kableExtra::kable_styling(full_width = FALSE, position = "left")
+```
+
+```{r final, echo=FALSE}
+# Eliminar filas con NA
+final <-  na.omit(combinada)
+uno <- write.xlsx(final, "4_DIMEX_BLASTER30052023.xlsx")
+```
