@@ -23,8 +23,8 @@ library(kableExtra)
 
 ### Tus datos son los siguientes :
 ```{r variables ,include=TRUE}
-fecha <- c("08/06/2023")
-hora_salida <- c("13:00:00")
+fecha <- c("22/06/2023")
+hora_salida <- c("10:40:00")
 fake_real <- c("REAL")
 ```
 

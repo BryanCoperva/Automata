@@ -70,5 +70,5 @@ kableExtra::kable(head(combinada, n=10), format = "html") %>%
 ```{r final, echo=FALSE}
 # Eliminar filas con NA
 final <-  na.omit(combinada)
-uno <- write.xlsx(final, "49_SKY_BLASTER08062023.xlsx")
+uno <- write.xlsx(final, "49_SKY_BLASTER20062023.xlsx")
 ```

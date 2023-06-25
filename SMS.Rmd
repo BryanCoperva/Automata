@@ -103,5 +103,5 @@ combined <-  na.omit(combined)
 
 ```{r salida, echo=FALSE}
 # Guardar el xlsx
-  datos_final <- write.xlsx(combined, "SKY_SMS_08062023.xlsx")
+  datos_final <- write.xlsx(combined, "SKY_SMS_22062023.xlsx")
 ```
